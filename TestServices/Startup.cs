@@ -16,31 +16,35 @@ namespace TestServices
         {
             //services.AddTimeService();
             services.AddTransient<IMessageSender, EmailMessageSender>();
-            //services.AddTransient<IMessageSender, SMSMessageSender>();
-            services.AddTransient<MessageService>();
+            services.AddTransient<IMessageSender, SMSMessageSender>();
+            //services.AddTransient<MessageService>();
         }
 
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 
-        public void Configure(IApplicationBuilder app, IHostEnvironment env, MessageService messageService)//(IApplicationBuilder app, Microsoft.AspNetCore.Hosting.IHostingEnvironment env, IMessageSender messageSender)
+        public void Configure(IApplicationBuilder app)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-
-            app.Run(async (context)=>
-            {
-                await context.Response.WriteAsync(messageService.Send());
-            });
-
-            //app.Run(async (context) =>
-            //{
-            //    context.Response.ContentType = "text/html; charset=utf-8";
-            //    await context.Response.WriteAsync(timeService.GetTime());
-            //});
+            app.UseMiddleware<MessageMiddleware>();
         }
+        //public void Configure(IApplicationBuilder app, IHostEnvironment env, MessageService messageService)//(IApplicationBuilder app, Microsoft.AspNetCore.Hosting.IHostingEnvironment env, IMessageSender messageSender)
+        //{
+        //    if (env.IsDevelopment())
+        //    {
+        //        app.UseDeveloperExceptionPage();
+        //    }
+
+        //    app.Run(async (context)=>
+        //    {
+        //        await context.Response.WriteAsync(messageService.Send());
+        //    });
+
+        //    //app.Run(async (context) =>
+        //    //{
+        //    //    context.Response.ContentType = "text/html; charset=utf-8";
+        //    //    await context.Response.WriteAsync(timeService.GetTime());
+        //    //});
+        //}
         //app.Run(async context =>
         //{
         //    var sb = new StringBuilder();

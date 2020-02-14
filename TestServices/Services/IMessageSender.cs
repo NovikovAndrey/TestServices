@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace TestServices.Services
 {
-    interface IMessageSender
+    public interface IMessageSender
     {
         string Send();
     }
